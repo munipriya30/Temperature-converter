@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converters</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px;
+             background-image: url('https://media.istockphoto.com/id/1415512899/photo/white-celsius-and-fahrenheit-scale-thermometer-in-hand-ambient-temperature-minus-4-degrees.jpg?s=612x612&w=0&k=20&c=Da857ayXd9B9Bi7I27ehjXsTOMvk136IaENxRRUzy58=');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .converter-box {
+            background-color: whitesmoke;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 320px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+        
+        #convertToF {
+            background-color: #4a90e2;
+            color: white;
+        }
+        
+        #convertToC {
+            background-color: #50c878;
+            color: white;
+        }
+        
+        #resetCtoF, #resetFtoC {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Celsius to Fahrenheit Converter -->
+    <div class="converter-box">
+        <h2>Celsius to Fahrenheit</h2>
+        
+        <div class="input-group">
+            <label for="celsius">Celsius (°C)</label>
+            <input type="number" id="celsius" placeholder="Enter temperature">
+        </div>
+        
+        <button id="convertToF">Convert to Fahrenheit</button>
+        <button id="resetCtoF">Reset</button>
+        
+        <div class="input-group">
+            <label for="fahrenheitResult">Fahrenheit (°F)</label>
+            <input type="number" id="fahrenheitResult" placeholder="Result" readonly>
+        </div>
+        
+        <div id="resultCtoF" class="result"></div>
+    </div>
+    
+    <!-- Fahrenheit to Celsius Converter -->
+    <div class="converter-box">
+        <h2>Fahrenheit to Celsius</h2>
+        
+        <div class="input-group">
+            <label for="fahrenheit">Fahrenheit (°F)</label>
+            <input type="number" id="fahrenheit" placeholder="Enter temperature">
+        </div>
+        
+        <button id="convertToC">Convert to Celsius</button>
+        <button id="resetFtoC">Reset</button>
+        
+        <div class="input-group">
+            <label for="celsiusResult">Celsius (°C)</label>
+            <input type="number" id="celsiusResult" placeholder="Result" readonly>
+        </div>
+        
+        <div id="resultFtoC" class="result"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Celsius to Fahrenheit elements
+            const celsiusInput = document.getElementById('celsius');
+            const fahrenheitResult = document.getElementById('fahrenheitResult');
+            const convertToFButton = document.getElementById('convertToF');
+            const resetCtoFButton = document.getElementById('resetCtoF');
+            const resultCtoF = document.getElementById('resultCtoF');
+            
+            // Fahrenheit to Celsius elements
+            const fahrenheitInput = document.getElementById('fahrenheit');
+            const celsiusResult = document.getElementById('celsiusResult');
+            const convertToCButton = document.getElementById('convertToC');
+            const resetFtoCButton = document.getElementById('resetFtoC');
+            const resultFtoC = document.getElementById('resultFtoC');
+            
+            // Convert Celsius to Fahrenheit
+            convertToFButton.addEventListener('click', function() {
+                if (celsiusInput.value === '') {
+                    showResult('Please enter a Celsius value', 'error', resultCtoF);
+                    return;
+                }
+                
+                const celsius = parseFloat(celsiusInput.value);
+                const fahrenheit = (celsius * 9/5) + 32;
+                fahrenheitResult.value = fahrenheit.toFixed(2);
+                
+                showResult(`${celsius}°C = ${fahrenheit.toFixed(2)}°F`, 'success', resultCtoF);
+            });
+            
+            // Convert Fahrenheit to Celsius
+            convertToCButton.addEventListener('click', function() {
+                if (fahrenheitInput.value === '') {
+                    showResult('Please enter a Fahrenheit value', 'error', resultFtoC);
+                    return;
+                }
+                
+                const fahrenheit = parseFloat(fahrenheitInput.value);
+                const celsius = (fahrenheit - 32) * 5/9;
+                celsiusResult.value = celsius.toFixed(2);
+                
+                showResult(`${fahrenheit}°F = ${celsius.toFixed(2)}°C`, 'success', resultFtoC);
+            });
+            
+            // Reset Celsius to Fahrenheit converter
+            resetCtoFButton.addEventListener('click', function() {
+                celsiusInput.value = '';
+                fahrenheitResult.value = '';
+                resultCtoF.style.display = 'none';
+            });
+            
+            // Reset Fahrenheit to Celsius converter
+            resetFtoCButton.addEventListener('click', function() {
+                fahrenheitInput.value = '';
+                celsiusResult.value = '';
+                resultFtoC.style.display = 'none';
+            });
+            
+            // Show result message
+            function showResult(message, type, element) {
+                element.textContent = message;
+                element.style.display = 'block';
+                
+                if (type === 'error') {
+                    element.style.backgroundColor = '#ffebee';
+                    element.style.color = '#c62828';
+                } else {
+                    element.style.backgroundColor = '#e8f5e9';
+                    element.style.color = '#2e7d32';
+                }
+            }
+            
+            // Allow conversion by pressing Enter
+            celsiusInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    convertToFButton.click();
+                }
+            });
+            
+            fahrenheitInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    convertToCButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
